@@ -21,8 +21,8 @@ const fileNamePrefix = isProduction? '[chunkhash].' : '';
 module.exports = {
     mode: !isProduction ? 'development': 'production',
     entry: {
-      main: './src/js/main.js',
-      login: './src/js/login.js',
+      home: './src/js/home.js',
+      about: './src/js/about.js',
       status: './src/js/status.js',
     },
     output: {
@@ -79,10 +79,10 @@ module.exports = {
         filename: "index.html",
       }),
       new htmlWebpackPlugin({
-        template: path.resolve(__dirname, "./src/login.html"),
+        template: path.resolve(__dirname, "./src/about.html"),
         chunks: ["about"],
         inject: "body",
-        filename: "login.html",
+        filename: "about.html",
       }),
       new htmlWebpackPlugin({
         template: path.resolve(__dirname, "./src/status.html"),
