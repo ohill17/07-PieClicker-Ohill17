@@ -8,15 +8,23 @@
   <style>
     .upgrade-button {
       margin: 10px 0;
+      display: flex;
+      align-items: center;
     }
 
     .upgrade-counter {
       margin-left: 10px;
     }
+
+    .upgrade-image {
+      margin-right: 10px;
+      width: 24px;
+      height: 24px;
+    }
   </style>
 </head>
-
 <body>
+
   <div>
     <h1 id="title">Pie Clicker!</h1>
     <div id="piesCount">Pies: <span id="piesNumber">0</span></div>
@@ -27,24 +35,39 @@
         <img id="pieImage" src="/assets/images/pie.png" width="710px">
       </button>
     </div>
-  </div>
-  <form id="loginForm" class="login-form">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" required>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
+    <form id="loginForm" class="login-form">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+    
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+    
+      <div class="form-actions">
+        <button type="submit">Login</button>
+        <button id="saveButton" type="button">Save Game</button>
+        <a href="status.html" class="signup-button">Signup</a>
+      </div>
+    </form>
+  
 
-    <button type="submit">Login</button>
-  </form>
   <div id="shopImage">
-    <button class="upgrade-button" id="whiteMomsButton">White Moms (Cost: <span id="whiteMomsCost">100</span> Pies)</button>
+    <button class="upgrade-button" id="whiteMomsButton">
+      <img class="upgrade-image" src="/assets/images/Mom.png" alt="White Moms">
+      White Moms (Cost: <span id="whiteMomsCost">100</span> Pies)
+    </button>
     <span class="upgrade-counter" id="whiteMomsCounter">0</span>
-    <br>
-    <button class="upgrade-button" id="fasterOvensButton">Faster Ovens (Cost: <span id="fasterOvensCost">2000</span> Pies)</button>
+    <br><br><br><br>
+    <button class="upgrade-button" id="fasterOvensButton">
+      <img class="upgrade-image" src="/assets/images/Oven.png" alt="Ovens">
+      Faster Ovens (Cost: <span id="fasterOvensCost">2000</span> Pies)
+    </button>
     <span class="upgrade-counter" id="fasterOvensCounter">0</span>
-    <br>
-    <button class="upgrade-button" id="blastOvensButton">Blast Ovens (Cost: <span id="blastOvensCost">6000</span> Pies)</button>
+    <br><br><br><br>
+    <button class="upgrade-button" id="blastOvensButton">
+      <img class="upgrade-image" src="/assets/images/BlastO.png" alt="Blast Oven">
+      Blast Ovens (Cost: <span id="blastOvensCost">6000</span> Pies)
+    </button>
     <span class="upgrade-counter" id="blastOvensCounter">0</span>
   </div>
 
