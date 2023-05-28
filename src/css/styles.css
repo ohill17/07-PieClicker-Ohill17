@@ -1,25 +1,77 @@
+/* Add this CSS code to center the text */
+#title {
+  text-align: center;
+  margin-top: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+h1 {
+  color: white;
+  text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+  padding: 10px;
+}
+
+/* Rest of your existing CSS code */
 .form-area {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+
 .title {
   margin: 20px;
 }
+
 .form-group {
   min-width: 500px;
 }
+
 @media only screen and (max-width: 736px) {
   .form-group {
     min-width: 90vw;
   }
 }
+
 .loading-indicator {
   max-height: 50px;
   max-width: 50px;
 }
+
 .chart-area {
   margin: 25px;
   max-width: 600px;
+}
+
+#pie {
+  filter: drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.5));
+  text-align: center;
+}
+
+button {
+  background-color: transparent;
+  border-radius: 100%;
+  border-color: transparent;
+}
+
+body {
+  background-image: url("../assets/images/Background.jpg");
+  background-position: center;
+  background-size: 100% 100%;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#shopImage {
+  position: fixed;
+  right: 10px;
+  top: 0;
+  width: 80%;
+  max-width: 500px;
+  max-height: 1000px
 }
