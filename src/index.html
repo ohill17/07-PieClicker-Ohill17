@@ -4,35 +4,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Event Registration</title>
-  <link rel="stylesheet" href="/src/css/styles.css">
+  <title>Pie Clicker!</title>
+  <style>
+    .upgrade-button {
+      margin: 10px 0;
+    }
 
+    .upgrade-counter {
+      margin-left: 10px;
+    }
+  </style>
 </head>
 
 <body>
   <div>
     <h1 id="title">Pie Clicker!</h1>
+    <div id="piesCount">Pies: <span id="piesNumber">0</span></div>
   </div>
-  <div id="pie">
-    <button type="button" onclick="changeImageSize()">
-      <img id="pieImage" src="/assets/images/pie.png" width="710px">
-    </button>
+  <div id="gameArea">
+    <div id="pie">
+      <button type="button" id="pieButton">
+        <img id="pieImage" src="/assets/images/pie.png" width="710px">
+      </button>
+    </div>
   </div>
+  <form id="loginForm" class="login-form">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
 
-  <script>
-    function changeImageSize() {
-      var pieImage = document.getElementById('pieImage');
-      pieImage.style.transition = 'width 0.05s'; // Add transition for smooth resizing
-      pieImage.style.width = '700px';
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
 
-      setTimeout(function() {
-        pieImage.style.width = ''; // Reset width to auto
-      }, 100);
-    }
-  </script>
+    <button type="submit">Login</button>
+  </form>
   <div id="shopImage">
-    <img src="assets/images/Shop.png" >
+    <button class="upgrade-button" id="whiteMomsButton">White Moms (Cost: <span id="whiteMomsCost">100</span> Pies)</button>
+    <span class="upgrade-counter" id="whiteMomsCounter">0</span>
+    <br>
+    <button class="upgrade-button" id="fasterOvensButton">Faster Ovens (Cost: <span id="fasterOvensCost">2000</span> Pies)</button>
+    <span class="upgrade-counter" id="fasterOvensCounter">0</span>
+    <br>
+    <button class="upgrade-button" id="blastOvensButton">Blast Ovens (Cost: <span id="blastOvensCost">6000</span> Pies)</button>
+    <span class="upgrade-counter" id="blastOvensCounter">0</span>
   </div>
+
+  <script src="script.js"></script>
 </body>
 
 </html>
