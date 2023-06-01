@@ -13,8 +13,7 @@ h1 {
   padding: 10px;
 }
 
-/* Rest of your existing CSS code */
-
+/* Form area */
 .form-area {
   display: flex;
   flex-direction: column;
@@ -30,17 +29,21 @@ h1 {
   min-width: 500px;
 }
 
-@media only screen and (max-width: 736px) {
+@media only screen and (max-width: 1024px) {
+
+  /* Adjust the max-width value as needed */
   .form-group {
     min-width: 90vw;
   }
 }
 
+/* Loading indicator */
 .loading-indicator {
   max-height: 50px;
   max-width: 50px;
 }
 
+/* Chart area */
 .chart-area {
   margin: 25px;
   max-width: 600px;
@@ -51,12 +54,14 @@ h1 {
   text-align: center;
 }
 
+/* Buttons */
 button {
   background-color: transparent;
   border-radius: 100%;
   border-color: transparent;
 }
 
+/* Body */
 body {
   background-image: url("../assets/images/Background.jpg");
   background-position: center;
@@ -68,6 +73,7 @@ body {
   justify-content: center;
 }
 
+/* Shop image */
 #shopImage {
   position: fixed;
   right: 10px;
@@ -77,8 +83,7 @@ body {
   max-height: 1000px;
 }
 
-/* Added CSS code */
-
+/* Login form */
 .login-form {
   position: absolute;
   top: 20px;
@@ -123,6 +128,7 @@ body {
   /* Slightly lighter dark red color on hover */
 }
 
+/* Pies count */
 #piesCount {
   position: absolute;
   top: 140px;
@@ -138,12 +144,13 @@ body {
   /* Ensure the text appears above other elements */
 }
 
+/* Upgrade button */
 .upgrade-button {
   margin: 5px;
   padding: 10px 20px;
   font-size: 16px;
   text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
-  background-color: #5a0000;
+  background-color: #8b0000;
   color: white;
   border: none;
   border-radius: 5px;
@@ -152,19 +159,26 @@ body {
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
 }
 
+.upgrade-button:hover {
+  background-color: #5a0000;
+}
+
+/* Upgrade counter */
 .upgrade-counter {
   margin: 5px;
   font-size: 25px;
   text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
   color: #5a0000;
-  
 }
 
+/* Game area */
 #gameArea {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
+
+/* Save button */
 #saveButton {
   padding: 8px 20px;
   background-color: #8b0000;
@@ -181,6 +195,7 @@ body {
   /* Slightly lighter dark red color on hover */
 }
 
+/* Signup button */
 .signup-button {
   position: absolute;
   top: 10px;
@@ -199,6 +214,8 @@ body {
 .signup-button:hover {
   background-color: #5a0000;
 }
+
+/* Signup form */
 .signup-form {
   display: flex;
   flex-direction: column;
@@ -234,9 +251,27 @@ body {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
-
 }
 
 .signup-form button:hover {
+  background-color: #5a0000;
+}
+
+#startMusicButton {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #8b0000;
+  color: white;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#startMusicButton:hover {
   background-color: #5a0000;
 }

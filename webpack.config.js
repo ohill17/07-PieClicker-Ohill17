@@ -22,8 +22,7 @@ module.exports = {
     mode: !isProduction ? 'development': 'production',
     entry: {
       home: './src/js/home.js',
-      about: './src/js/about.js',
-      status: './src/js/status.js',
+      login: './src/js/login.js',
     },
     output: {
       path: path.resolve(__dirname, "dist"),
@@ -79,16 +78,10 @@ module.exports = {
         filename: "index.html",
       }),
       new htmlWebpackPlugin({
-        template: path.resolve(__dirname, "./src/about.html"),
-        chunks: ["about"],
+        template: path.resolve(__dirname, "./src/login.html"),
+        chunks: ["login"],
         inject: "body",
-        filename: "about.html",
-      }),
-      new htmlWebpackPlugin({
-        template: path.resolve(__dirname, "./src/status.html"),
-        chunks: ["status"],
-        inject: "body",
-        filename: "status.html",
+        filename: "login.html",
       }),
       new copyPlugin({
         patterns: [
@@ -102,7 +95,6 @@ module.exports = {
       new webpack.DefinePlugin({
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         SERVER_URL: JSON.stringify(process.env.SERVER_URL),
-        GMAP_KEY: JSON.stringify(process.env.GMAP_KEY),
       }),
     ],
     /* separates js (and css) that is shared between bundles - allows browser to cache */
