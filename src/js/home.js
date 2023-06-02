@@ -4,6 +4,7 @@ import '../css/styles.css';
 import validateRegistrationForm from './services/formValidation/validateRegistrationForm';
 import toastr from 'toastr';
 import 'toastr/toastr.scss';
+const regeneratorRuntime = require("regenerator-runtime");
 
 class Pie {
   constructor() {
@@ -25,7 +26,7 @@ class Pie {
     this.addPieOnClick = this.addPieOnClick.bind(this);
     this.playButtonClickSound = this.playButtonClickSound.bind(this);
     this.startMusic = this.startMusic.bind(this);
-    
+
     const whiteMomsButton = document.getElementById('whiteMomsButton');
     whiteMomsButton.addEventListener('click', () => {
       this.buyUpgrade('whiteMoms');
@@ -61,7 +62,7 @@ class Pie {
   startMusic() {
     this.playBackgroundMusic();
     document.getElementById('startMusicButton').disabled = true;
-   
+
   }
 
   playBackgroundMusic() {
@@ -69,7 +70,7 @@ class Pie {
     audio.loop = true;
     audio.play();
   }
- 
+
   playButtonClickSound() {
     const audio = new Audio("/assets/images/click.mp3");
     audio.play();
