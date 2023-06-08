@@ -7,12 +7,17 @@ import 'toastr/toastr.scss';
 const regeneratorRuntime = require("regenerator-runtime");
 
 class Signup {
-  constructor(usernameId, passwordId) {
-    this.username = document.getElementById("username").value;
-    this.password = document.getElementById("password").value;
+  constructor() {
+    const submitButton = document.getElementById('submit');
+    submitButton.addEventListener('click', this.onFormSubmit.bind(this));
+  }
+
+  onFormSubmit(event) {
+    event.preventDefault();
+    const formValues = this.getFormValues();
     this.user = {
-      username: "",
-      password: "",
+      username: formValues.username,
+      password: formValues.password,
       gameData: {
         totalPies: 0,
         upgrades: {
@@ -30,21 +35,14 @@ class Signup {
           },
         },
       },
-    }
+    };
 
-
-    const submitButton = document.getElementById('submit');
-    submitButton.addEventListener('click', this.onFormSubmit.bind(this));
-  }
-  onFormSubmit(event) {
-    event.preventDefault();
-
-    const formValues = this.getFormValues();
     const validationResult = validateRegistrationForm(formValues);
-    console.log(validationResult);
     if (validationResult.isValid) {
       this.clearErrors();
-      this.handleSubmit(formValues);
+      this.handleSubmit();
+      this.resetForm();
+      toastr.success('Signup was successful!');
     } else {
       this.clearErrors();
       this.highlightErrors(validationResult);
@@ -53,46 +51,49 @@ class Signup {
 
   getFormValues() {
     return {
-      username: this.username.value || '',
-      password: this.password.value || '',
+      username: document.getElementById('username').value || '',
+      password: document.getElementById('password').value || '',
     };
   }
 
   handleSubmit() {
-
     // Perform AJAX request to save gameData
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(this.user),
     };
-
+    const SERVER_URL = 'http://localhost:3000/participants';
     fetch(SERVER_URL, requestOptions)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           console.log('Game data saved successfully!');
         } else {
           console.log('Failed to save game data.');
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log('An error occurred while saving game data.');
       });
   }
+
   resetForm() {
-    this.username.value = '';
-    this.password.value = '';
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    usernameInput.value = '';
+    passwordInput.value = '';
   }
+
   highlightErrors(result) {
-    const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password");
-  
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
     if (!result.username) {
       usernameInput.classList.add('is-invalid');
     } else {
       usernameInput.classList.remove('is-invalid');
     }
-  
+
     if (!result.password) {
       passwordInput.classList.add('is-invalid');
     } else {
@@ -100,16 +101,17 @@ class Signup {
     }
     // Add similar logic for other fields
   }
+
   clearErrors() {
-    const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password");
-    
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+
     usernameInput.classList.remove('is-invalid');
     passwordInput.classList.remove('is-invalid');
     // Remove 'is-invalid' class from other fields if needed
   }
 }
 
-// Instantiate the Game class
+// Instantiate the Signup class
 const signup = new Signup();
 window.signup = signup;

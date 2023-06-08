@@ -1,4 +1,3 @@
-
 export default function validateRegistrationForm(formValues) {
   const result = {
     username: validateUserName(formValues.username),
@@ -12,17 +11,17 @@ export default function validateRegistrationForm(formValues) {
 
   return {
     isValid,
+    
     result,
   };
 }
 
 function validateUserName(username) {
-  const pattern = /^[a-zA-Z]{3}/;
+  const pattern = /^[a-zA-Z]+/;
   return pattern.test(username);
 }
 
-// password
 function validatePassword(password) {
-  const pattern2 =  /^[a-zA-Z0-9]{4}/;
-  return pattern2.test(password);
+  const pattern = /^[a-zA-Z0-9]+/;
+  return pattern.test(password);
 }

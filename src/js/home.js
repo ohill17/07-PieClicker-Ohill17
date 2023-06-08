@@ -6,6 +6,7 @@ import toastr from 'toastr';
 import 'toastr/toastr.scss';
 const regeneratorRuntime = require("regenerator-runtime");
 
+
 class Pie {
   constructor() {
     this.whiteMomsCount = 0;
@@ -19,6 +20,13 @@ class Pie {
       fasterOvens: 2000,
       blastOvens: 6000,
     };
+
+
+    const saveButton = document.getElementById('saveButton');
+    saveButton.addEventListener('click', () => {
+      this.saveGameData()
+
+    });
 
     this.buyUpgrade = this.buyUpgrade.bind(this);
     this.changeImageSize = this.changeImageSize.bind(this);
@@ -58,26 +66,28 @@ class Pie {
     startMusicButton.addEventListener('click', this.startMusic);
 
     setInterval(this.generatePies, 1000);
+
+    this.initLoginForm();
   }
+
   startMusic() {
     this.playBackgroundMusic();
     document.getElementById('startMusicButton').disabled = true;
-
   }
 
   playBackgroundMusic() {
-    const audio = new Audio("/assets/images/piemusic.mp3");
+    const audio = new Audio('/assets/images/piemusic.mp3');
     audio.loop = true;
     audio.play();
   }
 
   playButtonClickSound() {
-    const audio = new Audio("/assets/images/click.mp3");
+    const audio = new Audio('/assets/images/click.mp3');
     audio.play();
   }
 
   playPieClickSound() {
-    const audio = new Audio("/assets/images/pie.mp3");
+    const audio = new Audio('/assets/images/pie.mp3');
     audio.play();
   }
 
@@ -104,7 +114,6 @@ class Pie {
     document.getElementById('fasterOvensCost').innerText = this.upgradeCosts.fasterOvens;
     document.getElementById('blastOvensCost').innerText = this.upgradeCosts.blastOvens;
   }
-
   getUpgradePieRate(upgradeType) {
     if (upgradeType === 'whiteMoms') {
       return 1;
@@ -137,7 +146,170 @@ class Pie {
     this.pieCount++;
     document.getElementById('piesNumber').innerText = this.pieCount;
   }
-}
+  async login(username, password) {
+    let SERVER_URL = "http://localhost:3000/participants";
 
+
+    try {
+      const response = await fetch(SERVER_URL);
+      if (response.ok) {
+        const data = await response.json();
+        const user = data.find(user => user.username === username && user.password === password);
+        if (user) {
+          this.resetUpgrades();
+          this.resetTotalPies();
+          this.resetGeneratePieRate();
+
+          this.updateData(user.gameData);
+          toastr.success('Login successful!');
+        } else {
+          toastr.error('Invalid username or password.');
+        }
+      } else {
+        toastr.error('Failed to fetch user data.');
+      }
+    } catch (error) {
+      toastr.error('An error occurred during login.');
+      console.error(error);
+    }
+  }
+
+  resetUpgrades() {
+    this.whiteMomsCount = 0;
+    this.fasterOvensCount = 0;
+    this.blastOvensCount = 0;
+
+    // Update the DOM elements with reset upgrade counts
+    document.getElementById('whiteMomsCounter').innerText = this.whiteMomsCount;
+    document.getElementById('fasterOvensCounter').innerText = this.fasterOvensCount;
+    document.getElementById('blastOvensCounter').innerText = this.blastOvensCount;
+  }
+  resetGeneratePieRate() {
+    this.pieGenerationRate = 0;
+  }
+
+  resetTotalPies() {
+    this.pieCount = 0;
+
+    // Update the DOM element with reset total pies count
+    document.getElementById('piesNumber').innerText = this.pieCount;
+  }
+  initLoginForm() {
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const username = usernameInput.value;
+      const password = passwordInput.value;
+      pie.login(username, password);
+
+      // Clear login fields
+      usernameInput.value = '';
+      passwordInput.value = '';
+    });
+  }
+  updateData(gameData) {
+    console.log(gameData);
+    if (gameData && typeof gameData === 'object') {
+      this.pieCount = gameData.totalPies || 0;
+      this.generatePies();
+      // Check if the gameData has valid upgrades data
+      if (gameData.upgrades && typeof gameData.upgrades === 'object') {
+        this.whiteMomsCount = gameData.upgrades.whiteMoms?.count || 0;
+        this.fasterOvensCount = gameData.upgrades.fasterOvens?.count || 0;
+        this.blastOvensCount = gameData.upgrades.blastOvens?.count || 0;
+      }
+
+      // Update the DOM elements with the updated data
+      document.getElementById('whiteMomsCounter').innerText = this.whiteMomsCount;
+      document.getElementById('fasterOvensCounter').innerText = this.fasterOvensCount;
+      document.getElementById('blastOvensCounter').innerText = this.blastOvensCount;
+      document.getElementById('piesNumber').innerText = this.pieCount;
+      document.getElementById('whiteMomsCost').innerText = gameData.upgrades?.whiteMoms?.cost || 0;
+      document.getElementById('fasterOvensCost').innerText = gameData.upgrades?.fasterOvens?.cost || 0;
+      document.getElementById('blastOvensCost').innerText = gameData.upgrades?.blastOvens?.cost || 0;
+    } else {
+      // Handle the case where gameData is undefined or has an unexpected structure
+      toastr.error('Invalid game data received.');
+    }
+  }
+  async getCurrentUser() {
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+
+    try {
+      let SERVER_URL = "http://localhost:3000/participants";
+      let url = SERVER_URL;
+
+      if (username && password) {
+        url += `?username=${username}&password=${password}`;
+      }
+
+      const response = await fetch(url);
+      const users = await response.json();
+
+      if (users.length > 0) {
+        return users[0]; // Assuming there is only one user with the given username and password
+      } else {
+        return null; // User not found
+      }
+    } catch (error) {
+      console.error('Failed to fetch user data:', error);
+      return null;
+    }
+  }
+
+  async saveGameData() {
+    const currentUser = await this.getCurrentUser();
+
+    if (currentUser) {
+      const updatedUser = {
+        ...currentUser,
+        gameData: {
+          totalPies: this.pieCount,
+          upgrades: {
+            whiteMoms: {
+              count: this.whiteMomsCount,
+              cost: this.upgradeCosts.whiteMoms,
+            },
+            fasterOvens: {
+              count: this.fasterOvensCount,
+              cost: this.upgradeCosts.fasterOvens,
+            },
+            blastOvens: {
+              count: this.blastOvensCount,
+              cost: this.upgradeCosts.blastOvens,
+            },
+          },
+        },
+      };
+
+      let SERVER_URL = "http://localhost:3000/participants";
+      try {
+        const response = await fetch(`${SERVER_URL}/${currentUser.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedUser),
+        });
+
+        if (response.ok) {
+          toastr.success('Game data saved successfully!');
+        } else {
+          toastr.error('Failed to save game data.');
+        }
+      } catch (error) {
+        toastr.error('An error occurred while saving game data.');
+        console.error(error);
+      }
+    } else {
+      toastr.error('No current user found.');
+    }
+  }
+}
 const pie = new Pie();
 window.pie = pie;
