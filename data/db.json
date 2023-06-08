@@ -1,48 +1,5 @@
 {
   "participants": [
-    {
-      "username": "Orion",
-      "password": "catsat11",
-      "gameData": {
-        "totalPies": 362,
-        "upgrades": {
-          "whiteMoms": {
-            "count": 6,
-            "cost": 126
-          },
-          "fasterOvens": {
-            "count": 0,
-            "cost": 2000
-          },
-          "blastOvens": {
-            "count": 0,
-            "cost": 6000
-          }
-        }
-      },
-      "id": 1
-    },
-    {
-      "username": "ohill17",
-      "password": "balls",
-      "gameData": {
-        "totalPies": 1000,
-        "upgrades": {
-          "whiteMoms": {
-            "count": 0,
-            "cost": 100
-          },
-          "fasterOvens": {
-            "count": 0,
-            "cost": 2000
-          },
-          "blastOvens": {
-            "count": 0,
-            "cost": 6000
-          }
-        }
-      },
-      "id": 2
-    }
+   
   ]
 }
