@@ -23,15 +23,15 @@ class Signup {
         upgrades: {
           whiteMoms: {
             count: 0,
-            cost: 100,
+            cost: 50,
           },
           fasterOvens: {
             count: 0,
-            cost: 2000,
+            cost: 1000,
           },
           blastOvens: {
             count: 0,
-            cost: 6000,
+            cost: 3000,
           },
         },
       },
@@ -41,6 +41,7 @@ class Signup {
     if (validationResult.isValid) {
       this.clearErrors();
       this.handleSubmit();
+      this.toMainPage();
       this.resetForm();
       toastr.success('Signup was successful!');
     } else {
@@ -57,13 +58,12 @@ class Signup {
   }
 
   handleSubmit() {
-    // Perform AJAX request to save gameData
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(this.user),
     };
-    const SERVER_URL = 'http://localhost:3000/participants';
+    
     fetch(SERVER_URL, requestOptions)
       .then((response) => {
         if (response.ok) {
@@ -99,7 +99,7 @@ class Signup {
     } else {
       passwordInput.classList.remove('is-invalid');
     }
-    // Add similar logic for other fields
+
   }
 
   clearErrors() {
@@ -108,10 +108,13 @@ class Signup {
 
     usernameInput.classList.remove('is-invalid');
     passwordInput.classList.remove('is-invalid');
-    // Remove 'is-invalid' class from other fields if needed
+  
   }
+  toMainPage() {
+    window.location.href = 'index.html';
+  }
+
 }
 
-// Instantiate the Signup class
 const signup = new Signup();
 window.signup = signup;

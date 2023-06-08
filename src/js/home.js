@@ -1,4 +1,4 @@
-import 'bootstrap';
+import 'bootstrap';3000
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/styles.css';
 import validateRegistrationForm from './services/formValidation/validateRegistrationForm';
@@ -16,9 +16,9 @@ class Pie {
     this.pieGenerationRate = 0;
 
     this.upgradeCosts = {
-      whiteMoms: 100,
-      fasterOvens: 2000,
-      blastOvens: 6000,
+      whiteMoms: 50,
+      fasterOvens: 1000,
+      blastOvens: 3000,
     };
 
 
@@ -100,10 +100,8 @@ class Pie {
       this.pieCount -= cost;
       document.getElementById(upgradeType + 'Counter').innerText = this[upgradeType + 'Count'];
 
-      // Increase the upgrade cost for the next purchase (compounding on the new price)
       this.upgradeCosts[upgradeType] = Math.floor(cost * 1.05);
 
-      // Update pie generation rate
       this.pieGenerationRate = this.whiteMomsCount * 1 + this.fasterOvensCount * 10 + this.blastOvensCount * 50;
     } else {
       toastr.warning('Insufficient pies to buy the upgrade.');
@@ -127,11 +125,11 @@ class Pie {
 
   changeImageSize() {
     const pieImage = document.getElementById('pieImage');
-    pieImage.style.transition = 'width 0.05s'; // Add transition for smooth resizing
+    pieImage.style.transition = 'width 0.05s';
     pieImage.style.width = '700px';
 
     setTimeout(() => {
-      pieImage.style.width = ''; // Reset width to auto
+      pieImage.style.width = '';
     }, 100);
   }
 
@@ -147,9 +145,6 @@ class Pie {
     document.getElementById('piesNumber').innerText = this.pieCount;
   }
   async login(username, password) {
-    let SERVER_URL = "http://localhost:3000/participants";
-
-
     try {
       const response = await fetch(SERVER_URL);
       if (response.ok) {
@@ -159,9 +154,12 @@ class Pie {
           this.resetUpgrades();
           this.resetTotalPies();
           this.resetGeneratePieRate();
-
+  
           this.updateData(user.gameData);
           toastr.success('Login successful!');
+      
+          const loginButton = document.getElementById('loginButton');
+          loginButton.disabled = true;
         } else {
           toastr.error('Invalid username or password.');
         }
@@ -173,6 +171,7 @@ class Pie {
       console.error(error);
     }
   }
+  
 
   resetUpgrades() {
     this.whiteMomsCount = 0;
@@ -241,7 +240,7 @@ class Pie {
     const password = passwordInput.value;
 
     try {
-      let SERVER_URL = "http://localhost:3000/participants";
+    
       let url = SERVER_URL;
 
       if (username && password) {
@@ -287,7 +286,7 @@ class Pie {
         },
       };
 
-      let SERVER_URL = "http://localhost:3000/participants";
+      
       try {
         const response = await fetch(`${SERVER_URL}/${currentUser.id}`, {
           method: 'PUT',
