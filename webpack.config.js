@@ -19,7 +19,7 @@ const isProduction = (process.env.NODE_ENV === 'production');
 const fileNamePrefix = isProduction? '[chunkhash].' : '';
 
 module.exports = {
-    mode: !isProduction ? 'development': 'production',
+  mode: !isProduction ? 'development': 'production',
     entry: {
       home: './src/js/home.js',
       login: './src/js/login.js',

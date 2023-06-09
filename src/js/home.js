@@ -9,6 +9,10 @@ const regeneratorRuntime = require("regenerator-runtime");
 
 class Pie {
   constructor() {
+
+    const loginButton = document.getElementById('loginButton');
+    loginButton.addEventListener('click', this.login.bind(this));
+
     this.whiteMomsCount = 0;
     this.fasterOvensCount = 0;
     this.blastOvensCount = 0;
@@ -76,18 +80,18 @@ class Pie {
   }
 
   playBackgroundMusic() {
-    const audio = new Audio('/assets/images/piemusic.mp3');
+    const audio = new Audio('assets/images/piemusic.mp3');
     audio.loop = true;
     audio.play();
   }
 
   playButtonClickSound() {
-    const audio = new Audio('/assets/images/click.mp3');
+    const audio = new Audio('assets/images/click.mp3');
     audio.play();
   }
 
   playPieClickSound() {
-    const audio = new Audio('/assets/images/pie.mp3');
+    const audio = new Audio('assets/images/pie.mp3');
     audio.play();
   }
 
@@ -144,20 +148,25 @@ class Pie {
     this.pieCount++;
     document.getElementById('piesNumber').innerText = this.pieCount;
   }
-  async login(username, password) {
+  async login() {
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const username = usernameInput.value;
+    const password = passwordInput.value;
+
     try {
+      let SERVER_URL = "http://citweb.lanecc.net:5014/participants"
       const response = await fetch(SERVER_URL);
       if (response.ok) {
         const data = await response.json();
         const user = data.find(user => user.username === username && user.password === password);
         if (user) {
+          this.currentUser = user; // Store the currently logged-in user
           this.resetUpgrades();
           this.resetTotalPies();
           this.resetGeneratePieRate();
-  
           this.updateData(user.gameData);
           toastr.success('Login successful!');
-      
           const loginButton = document.getElementById('loginButton');
           loginButton.disabled = true;
         } else {
@@ -213,60 +222,38 @@ class Pie {
     if (gameData && typeof gameData === 'object') {
       this.pieCount = gameData.totalPies || 0;
       this.generatePies();
+  
       // Check if the gameData has valid upgrades data
       if (gameData.upgrades && typeof gameData.upgrades === 'object') {
         this.whiteMomsCount = gameData.upgrades.whiteMoms?.count || 0;
         this.fasterOvensCount = gameData.upgrades.fasterOvens?.count || 0;
         this.blastOvensCount = gameData.upgrades.blastOvens?.count || 0;
       }
-
+  
       // Update the DOM elements with the updated data
       document.getElementById('whiteMomsCounter').innerText = this.whiteMomsCount;
       document.getElementById('fasterOvensCounter').innerText = this.fasterOvensCount;
       document.getElementById('blastOvensCounter').innerText = this.blastOvensCount;
       document.getElementById('piesNumber').innerText = this.pieCount;
-      document.getElementById('whiteMomsCost').innerText = gameData.upgrades?.whiteMoms?.cost || 0;
-      document.getElementById('fasterOvensCost').innerText = gameData.upgrades?.fasterOvens?.cost || 0;
-      document.getElementById('blastOvensCost').innerText = gameData.upgrades?.blastOvens?.cost || 0;
+  
+      // Update the upgrade costs
+      document.getElementById('whiteMomsCost').innerText = gameData.upgrades?.whiteMoms?.cost || this.upgradeCosts.whiteMoms;
+      document.getElementById('fasterOvensCost').innerText = gameData.upgrades?.fasterOvens?.cost || this.upgradeCosts.fasterOvens;
+      document.getElementById('blastOvensCost').innerText = gameData.upgrades?.blastOvens?.cost || this.upgradeCosts.blastOvens;
+  
+      // Update the upgrade costs in the upgradeCosts object
+      this.upgradeCosts.whiteMoms = gameData.upgrades?.whiteMoms?.cost || this.upgradeCosts.whiteMoms;
+      this.upgradeCosts.fasterOvens = gameData.upgrades?.fasterOvens?.cost || this.upgradeCosts.fasterOvens;
+      this.upgradeCosts.blastOvens = gameData.upgrades?.blastOvens?.cost || this.upgradeCosts.blastOvens;
     } else {
       // Handle the case where gameData is undefined or has an unexpected structure
       toastr.error('Invalid game data received.');
     }
   }
-  async getCurrentUser() {
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const username = usernameInput.value;
-    const password = passwordInput.value;
-
-    try {
-    
-      let url = SERVER_URL;
-
-      if (username && password) {
-        url += `?username=${username}&password=${password}`;
-      }
-
-      const response = await fetch(url);
-      const users = await response.json();
-
-      if (users.length > 0) {
-        return users[0]; // Assuming there is only one user with the given username and password
-      } else {
-        return null; // User not found
-      }
-    } catch (error) {
-      console.error('Failed to fetch user data:', error);
-      return null;
-    }
-  }
-
   async saveGameData() {
-    const currentUser = await this.getCurrentUser();
-
-    if (currentUser) {
+    if (this.currentUser) { // Check if a user is logged in
       const updatedUser = {
-        ...currentUser,
+        ...this.currentUser,
         gameData: {
           totalPies: this.pieCount,
           upgrades: {
@@ -286,9 +273,9 @@ class Pie {
         },
       };
 
-      
       try {
-        const response = await fetch(`${SERVER_URL}/${currentUser.id}`, {
+        let SERVER_URL = "http://citweb.lanecc.net:5014/participants"
+        const response = await fetch(`${SERVER_URL}/${this.currentUser.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -306,7 +293,7 @@ class Pie {
         console.error(error);
       }
     } else {
-      toastr.error('No current user found.');
+      toastr.error('No current user found. Please log in.');
     }
   }
 }

@@ -63,7 +63,7 @@ class Signup {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(this.user),
     };
-    
+    let SERVER_URL = "http://citweb.lanecc.net:5014/participants"
     fetch(SERVER_URL, requestOptions)
       .then((response) => {
         if (response.ok) {
